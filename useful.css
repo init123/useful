@@ -1,0 +1,118 @@
+
+/* 强制换行 */
+word-wrap: break-word;
+
+/* 禁止换行 */
+white-space: nowrap;
+
+/* 超出隐藏 */
+overflow: hidden;
+
+/* 追加省略号 */
+text-overflow: ellipsis;
+
+/* 边框圆角 */
+border-radius: [.25em | 2px];
+
+/* 背景色透明 字体不透明 */
+background-color: rgba(0, 0, 0, 0.1);
+background-color: #000\9;  /* [IE all] */
+filter:alpha(opacity=30)\9; /* [IE all] */
+
+/* 背景透明，文字不透明 */
+{position: relative}
+
+/* 清除浮动 */
+.f-cb:before,
+.f-cb:after{content:"";display:table}
+.f-cb:after{clear:both}
+.f-cb{zoom:1}
+
+/* 内联块元素 */
+.f-ib{display:inline-block;*display:inline;*zoom:1;}
+
+/* 禁止改变文本框的大小 */
+textarea{overflow:auto;resize:none;}
+
+/* 表格去除内外边距 */
+table{border-collapse:collapse;border-spacing:0;}
+
+/* 去掉焦点边框 */
+outline: 0;
+
+/* 遮罩层 */
+.u-mask{position:fixed;top:0;right:0;bottom:0;left:0;background-color:#fff;opacity:.5;filter:alpha(opacity=0);z-index:2;-moz-transition:all .5s;-webkit-transition:all .5s;transition:all .5s}
+
+/* 禁选文本  */
+.f-usn{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;}
+
+/* <reset> */
+html{height:100%;-overflow-y:scroll;border:0}
+body{min-height:100%;-height:100%;position:relative}
+body,h1,h2,h3,h4,h5,h6,p,div,dl,dt,dd,ul,ol,li,form,button,input,textarea,th,td,pre,fieldset,img{margin:0;padding:0;border:0;}
+h1,h2,h3,h4,h5,h6,select,input,textarea,button,table{font-size:100%;font-weight:normal}
+ul,ol,dl{list-style:none}
+a,u,a:hover{text-decoration:none;outline:0;}
+i,em{font-style:normal}
+table{border-collapse:collapse;border-spacing:0}
+th{text-align:left;font-weight:normal}
+body,textarea,input,button,select{font:12px/1.14 arial,\5b8b\4f53;color:#333;outline:0;}
+
+/* <function> */
+.f-cb:before,.f-cb:after{content:".";display:table;}.f-cb:after{clear:both;}.f-cb{*zoom:1;}
+.f-ib{display:inline-block;*display:inline;*zoom:1;}/* IE6-7*/
+.f-por{position:relative;}
+.f-poa{position:absolute;}
+.f-tac{text-align:center;}
+.f-tar{text-align:right;}
+.f-tal{text-align:left;}
+.f-fl{float:left;}
+.f-fr{float:right;}
+.f-dn{display:none;}
+.f-db{display:block;}
+.f-oh{overflow:hidden;}
+.f-fwb{font-weight:700;}
+.f-fwn{font-weight:400;}
+.f-wsn{white-space:nowrap;word-wrap:normal;} /* 禁止换行 */
+.f-toe{white-space:nowrap;word-wrap:normal;overflow:hidden;text-overflow:ellipsis;} /* 禁止换行，后面省略号补充 */
+.f-wwb{white-space:normal;word-wrap:break-word;word-break:break-all;} /* 强制换行 */
+
+/* <html5> 引入html5shiv.js */
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block;margin:0;padding:0;border:0;}
+audio,canvas,video{display:inline-block;*display:inline;*zoom:1;}
+
+<!--[if lt IE 9]>
+<script src="html5shiv.js"></script>
+<![endif]-->
+
+/* CSS属性级Hack */ 
+color:red; /* 所有浏览器可识别*/ 
+_color:red; /* 仅IE6 识别 */ 
+*color:red; /* IE6、IE7 识别 */ 
++color:red; /* IE6、IE7 识别 */ 
+[color:red; /* IE6、IE7 识别 */ 
+color:red\9; /* IE6、IE7、IE8、IE9 识别 */ 
+color:red\0; /* IE8、IE9 识别*/ 
+color:red\9\0; /* 仅IE9识别 */
+color:red!important; /* IE6 不识别!important 有危险*/
+
+/* CSS选择符级Hack */ 
+*html #demo { color:red;} /* 仅IE6 识别 */ 
+*+html #demo { color:red;} /* 仅IE7 识别 */ 
+body:nth-of-type(1) #demo { color:red;} /* IE9+、FF3.5+、Chrome、Safari、Opera 可以识别 */ 
+head:first-child+body #demo { color:red; } /* IE7+、FF、Chrome、Safari、Opera 可以识别 */ 
+:root #demo { color:red\9; } : /* 仅IE9识别 */
+ 
+/* IE条件注释Hack */ 
+<!--[if IE 6]>此处内容只有IE6.0可见<![endif]-->
+<!--[if IE 7]>此处内容只有IE7.0可见<![endif]-->
+
+
+
+
+
+
+
+
+
+

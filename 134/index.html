@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width" />
+<title>关于outline-offset属性</title>
+<style>
+*{font-family: Consolas;}
+.c {text-align: center;}
+
+.o {
+	width: 100px;
+	height: 100px;
+	border:1px  solid blue;
+	outline:2px  solid hotpink;
+	outline-offset: 15px;
+	margin: 60px auto;
+}
+
+#o{cursor: pointer;}
+
+.p {
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	padding-top: 130px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="c">
+
+  <h2>The <code>outline-offset</code> property</h2>
+
+  <div class="o"></div>
+
+  <input type="range" min="0" max="30" id="o" value="15" />
+
+  <p>Adjust the slider to change the amount of offset for the outline.</p>
+
+</div>
+
+<script>
+
+var o = document.querySelector('.o'),
+    oRange = document.getElementById('o');
+
+oRange.addEventListener('input', function () {
+
+  o.style.outlineOffset = this.value + 'px';
+  
+}, false);
+
+</script>
+
+</body>
+</html>

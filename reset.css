@@ -1,0 +1,34 @@
+
+@charset "utf-8";
+
+/* <reset> */
+html{height:100%;-overflow-y:scroll;border:0}
+body{min-height:100%;-height:100%;position:relative}
+html,body{overflow-x:hidden;overflow-y:auto;} /*wap right-blank*/
+body,h1,h2,h3,h4,h5,h6,p,div,dl,dt,dd,ul,ol,li,form,button,input,textarea,th,td,pre,fieldset,img{margin:0;padding:0;border:0;}
+h1,h2,h3,h4,h5,h6,select,input,textarea,button,table{font-size:100%;font-weight:normal}
+ul,ol,dl{list-style:none}
+a,u,a:hover{text-decoration:none;outline:0;}
+i,em{font-style:normal}
+table{border-collapse:collapse;border-spacing:0}
+th{text-align:left;font-weight:normal}
+body,textarea,input,button,select{font:12px/1.14 \5FAE\8F6F\96C5\9ED1,arial,\5b8b\4f53;color:#333;outline:0;}
+
+/* <function> */
+.f-cb:before,.f-cb:after{content:" ";display:table;}.f-cb:after{clear:both;}.f-cb{*zoom:1;}
+.f-ib{display:inline-block;*display:inline;*zoom:1;}/* IE6-7*/
+.f-por{position:relative;}
+.f-poa{position:absolute;display:block;}
+.f-tac{text-align:center;}
+.f-tar{text-align:right;}
+.f-tal{text-align:left;}
+.f-fl{float:left;display:block;}
+.f-fr{float:right;display:block;}
+.f-dn{display:none;}
+.f-db{display:block;}
+.f-oh{overflow:hidden;}
+.f-fwb{font-weight:700;}
+.f-fwn{font-weight:400;}
+.f-wsn{white-space:nowrap;word-wrap:normal;}
+.f-toe{white-space:nowrap;word-wrap:normal;overflow:hidden;text-overflow:ellipsis;}
+.f-wwb{white-space:normal;word-wrap:break-word;word-break:break-all;}

@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="utf-8" />
+<title>是否移动设备&&支持触摸控制</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+<meta name="format-detection" content="telephone=no,email=no" />
+<script>
+console.log(!0);
+
+var a = '10', b = [];
+10 === a || b.push(a);
+console.log(b);
+
+// 判断是否移动设备
+var isWap = /(iPhone|iPod|Android|ios)/i.test(navigator.userAgent);
+console.log(isWap);
+
+// 能否支持触摸控制
+var canTouch = 'ontouchstart' in window ? !0 : !1;
+console.log(canTouch);
+
+</script>
+</head>
+<body>
+
+</body> 
+</html>
