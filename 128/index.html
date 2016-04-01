@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>基于jQuery的弹窗[待完善]</title>
+<script src="../jquery.1.8.3.min.js"></script>
+<script src="jquery.popups.js"></script>
+<link rel="stylesheet" href="../reset.css" />
+<style>
+.m-btn{background-color:#69f;color:#fff;padding:8px 30px;font-size:14px;border-radius:.25em;}
+
+/* Popup Css -- Tony.zeng <intval@163.com> */
+.m-popup{border-collapse:collapse;left:0;top:0;width:100%;height:100%;*position:static;}
+.m-popup .pop-tt *{display:inline-block;*display:inline;*zoom:1;vertical-align: top;}
+.m-popup .pop-tt span{width:92%;text-align:left;line-height:36px;font-size:15px;}
+.m-popup .pop-tt a{font:700 24px/36px Arial;color:#fff;width:4%;text-align:right;}
+.m-popup .pop-tt a:hover{color:#333;}
+.m-popup .pop-btn *{display:inline-block;*display:inline;*zoom:1;}
+
+/* 默认皮肤 */
+.m-popup .skin{background-color:#fff;border:5px solid #69f;}
+.m-popup .skin .pop-tt{height:36px;color:#fff;background-color:#69f;}
+.m-popup .skin .pop-btn{padding:13px;border-top:1px solid #69f;height: 30px;}
+.m-popup .skin .pop-btn a{padding:0 15px;font-size:13px;line-height:30px;margin:0 10px;border-radius:.25em;}
+.m-popup .skin a.pop-sure{background-color: #69f;color: #fff;}
+.m-popup .skin a.pop-sure:hover{background-color:#54f;}
+.m-popup .skin a.pop-cancel{background-color:#ddd;color: #666;}
+
+#m-news{padding: 20px 0;}
+#m-news input{border:1px solid #69f;padding:6px 6px; }
+#m-news *{vertical-align: middle;}
+
+#m-slt{padding: 20px 0;}
+#m-slt input{border:1px solid #69f;padding:6px 6px; vertical-align: middle;}
+#m-slt *{vertical-align: middle;}
+
+#m-mem{padding: 20px 0;}
+#m-mem input{border:1px solid #69f;padding:6px 6px; vertical-align: middle;}
+#m-mem *{vertical-align: middle;}
+</style>
+</head>
+<body>
+
+<div style="padding:100px;">
+	<a href="javascript:void(0);" class="m-btn f-ib j-news">新增</a>
+	<a href="javascript:void(0);" data-param="100" class="m-btn f-ib j-news">编辑</a>
+	<a href="javascript:void(0);" data-param="200" class="m-btn f-ib j-news">编辑</a>
+</div>
+
+<script>
+
+//
+var news = new zPopups('.j-news', 'news', {
+
+	title: '新增/修改',
+
+	content: function(){
+
+		return 	'<div id="m-news">' +
+					'<form mothed="post" id="j-form1"><input type="text">&nbsp;' +
+					'<a href="javascript:void(0);" data-param="10" class="m-btn f-ib j-slt">选择</a></form>' +
+				'</div>';
+	},
+
+	init: function(v){
+
+		// 区别 新增 和 编辑
+		if(v == 'null'){
+			$('#j-form1').attr('action', 'add');
+		}else{
+			$('#j-form1 > input:first').val(v);
+			$('#j-form1').attr('action', 'edit');
+		}
+	},
+
+	sure: {
+		txt: '提交',
+		func: function(v){
+			console.log('sure, Param: ' + v);
+		}
+	},
+
+	cancel: {
+		txt: '取消',
+		func: function(v){
+			console.log('cancel, Param: ' + v);
+		}
+	},
+
+	close: function(v){
+		console.log('close, Param: ' + v);
+	}
+});
+
+var slt = new zPopups('.j-slt', 'slt', {
+
+	title: '选择',
+
+	width: 400,
+
+	// other: false,
+
+	content: function(){
+
+		return 	'<div id="m-slt">' +
+					'<input id="j-txt2" type="text">&nbsp;' +
+					'<a href="javascript:void(0);" data-param="1" class="m-btn f-ib j-mem">分组</a>' +
+				'</div>';
+	},
+
+	init: function(v){
+
+		$('#j-txt2').val(v);
+	},
+
+	sure: {
+		txt: '确定',
+		func: function(v){
+			console.log('sure, Param: ' + v);
+		}
+	},
+
+	cancel: {
+		txt: '取消',
+		func: function(v){
+			console.log('cancel, Param: ' + v);
+		}
+	},
+
+	close: function(v){
+		console.log('close, Param: ' + v);
+	}
+});
+
+var mem = new zPopups('.j-mem', 'mem', {
+
+	title: '分组',
+
+	width: 300,
+
+	// other: false,
+
+	content: function(){
+
+		return 	'<div id="m-mem">' +
+					'<input id="j-txt3" type="text">' +
+				'</div>';
+	},
+
+	init: function(v){
+
+		$('#j-txt3').val(v);
+	},
+
+	sure: {
+		txt: '确定',
+		func: function(v){
+			console.log('sure, Param: ' + v);
+		}
+	},
+
+	cancel: {
+		txt: '取消',
+		func: function(v){
+			console.log('cancel, Param: ' + v);
+		}
+	},
+
+	close: function(v){
+		console.log('close, Param: ' + v);
+	}
+});
+
+</script>
+</body>
+</html>

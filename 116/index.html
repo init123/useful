@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>HTML5 Canvas</title>
+</head>
+<body>
+<div style="margin:30px;">
+<canvas id="j-canvas1" width="300" height="300" style="border-left:1px solid #ccc;border-bottom:1px solid #ccc;">
+</canvas>
+</div>
+<script>
+
+var data = [12.5, 22.5, 30, 7.75, 27.25], stp = 35, each = 10, x1 = 0, h = 300;
+
+var canvasTag1 = document.getElementById('j-canvas1');
+var canvasCnt1 = canvasTag1.getContext('2d');
+
+for(var i = 0, n = data.length; i < n; i++){
+	
+	if(i === 0){
+		x1 = x1 + each;
+	}else{
+		x1 += (stp + each * 2);
+	}
+
+	var _y1 = 300 - (data[i] / 100 * 300);
+	createTag(canvasCnt1, x1, _y1, (stp + each), h);
+}
+
+function createTag(_ob, _x1, _y1, _x2, _y2) {
+	_ob.fillStyle = 'rgb(102, 153, 255)'; 
+   	_ob.fillRect(_x1, _y1, _x2, _y2); 
+}
+</script>
+</body>
+</html>

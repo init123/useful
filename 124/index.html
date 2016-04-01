@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Js代码测试</title>
+<meta charset="utf-8" />
+<style>
+.u-test{font:700 20px Consolas;}
+</style>
+</head>
+
+<body>
+<p class="tt"><b>1dd</b></p>
+<p>2</p>
+<p class="tt">3dd</p>
+<script>
+
+// (.)元字符用于查找单个字符，除了换行和行结束符。
+var str = 'Thaet is hobt!';
+var patt = /h..t/g;
+console.log(str.match(patt));
+
+// (\w)元字符用于查找单词字符。
+var str = 'Give 100%!'; 
+var patt = /\w/g;
+console.log(str.match(patt));
+
+// (\s)元字符用于查找空白。
+var str = "Is this all there is?"; 
+var patt = /\s/g;
+console.log(str.match(patt));
+
+var txt = "Hello world!"
+console.log(txt.anchor('z-nchor'));
+
+console.log(Number('001'));
+console.log(String(123));
+
+// var div = createEle('div', {
+//         'id': 'g-test',
+//         'class': 'u-test',
+//         'data-v': ''
+//     });
+
+// div.innerHTML = 'Just do it';
+// div.style.cssText = parseCss({
+//     'color':'#36c',
+//     'cursor':'pointer'
+// });
+
+// appendTo(div, document.body);
+
+// console.log(Z('.tt'));
+
+
+
+function Z(sle){
+	if(sle.indexOf('#') !== -1){
+		return document.querySelector(sle);
+	}else{
+		return document.querySelectorAll(sle);
+	}
+}
+
+// 遍历DOM对象
+if(!Object.prototype.each){
+    Object.prototype.each = function(fn) {
+        if ( this.length > 0 ) {
+            for ( var i = 0; i < this.length; i++ ) {
+                fn.call( this[i], i );
+            }
+        }
+    }
+}
+
+// 
+Z('p').each(function(){
+	this.style.cssText = parseCss({'display':'block'});
+});
+
+function parseCss(json){
+    var str = '', k;
+    for(k in json){
+        str += k + ': ' + json[k] + ';';
+    }
+    return str;
+}
+
+function createEle(tag, attr){
+    var _tag = document.createElement(tag);
+    for(var key in attr){
+        _tag.setAttribute(key, attr[key]);
+    }
+    return _tag;
+}
+
+function appendTo(child, parent){
+	parent.appendChild(child);
+}
+
+// -------------- [华丽分割线] ---------------
+
+/* Js 利用 call 实现多重继承 */
+
+// function classA(){  
+//     this.sub = function(a, b){  
+//         console.log(a - b);  
+//     }  
+// }  
+  
+// function classB(){  
+//     this.add = function(a, b){  
+//         console.log(a + b);  
+//     }  
+// }  
+  
+// function classAll(){  
+//     classA.call(this);  
+//     classB.call(this);  
+// }
+
+// var all = new classAll();
+// all.sub(101, 10);
+// all.add(10, 10);
+
+// -------------- [华丽分割线] ---------------
+
+/* 使用 [构造函数法] 来 创建对象 */
+function Doit(ele, opt, call){
+
+	this.opts = {
+		'param' : false,
+		'timer' : 2000,
+		'speed' : 300
+	};
+
+	for(var i in opt){
+		this.opts[i] = opt[i];
+	}
+
+	for(var x in call){
+		call[x].call(null, this.opts.param);
+	}
+
+	this.change();
+}
+
+Doit.prototype = {
+	'change' : function(){
+		console.log(this.opts.speed);
+	}
+};
+
+// new Doit(
+// 	'', 
+// 	{
+// 		'param' : 2000,
+// 		'timer' : 2000
+// 	}, 
+// 	{
+// 		'init' : function(param){
+// 			console.log(param + '...initialize......');
+// 		},
+// 		'sure' : function(param){
+// 			console.log(param + '...sure......');
+// 		},
+// 		'cancel' : function(param){
+// 			console.log(param + '...cancel......');
+// 		},
+// 		'complete' : function(param){
+// 			console.log(param + '...complete....');
+// 		}
+// 	}
+// );
+
+
+// -------------- [华丽分割线] ---------------
+
+/* 荷兰程序员Gabor de Mooij提出了一种 [极简主义法] 来 创建对象 */
+
+// var Cat = {
+// 	forNew : function(){
+// 		var cat = {};
+// 		cat.name = '豆豆 ';
+// 		cat.makeSound = function(){
+// 			return cat.name + '喵喵喵';
+// 		};
+// 		return cat;
+// 	}
+// };
+
+// var cat1 = Cat.forNew();
+// console.log(cat1.makeSound());
+
+// -------------- [华丽分割线] ---------------
+
+</script>
+</body>
+</html>

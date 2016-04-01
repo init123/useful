@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>纯JS实现链式调用(模拟jQuery的addClass)</title>
+</head>
+<body>
+
+<h4 style="font:24px/1.5 Consolas" id="u-test" class=" yes cb cv av" data-id="100">
+    纯JS实现链式调用(模拟jQuery的addClass)
+</h4>
+<h4 style="font:12px/1.5 Consolas" id="u-test" class=" yes cb cv av" data-id="100">
+    纯JS实现链式调用(模拟jQuery的addClass)
+</h4>
+
+<script>
+
+// 返回实例 寄生于window
+window.Z = function(ele){
+    return new Zz(ele);
+};
+
+// 构造函数法
+function Zz(ele){
+
+    this.z = (function(e){
+        
+        if(e.indexOf('#') !== -1){
+            return document.getElementById(e.substr(1));
+        }else{
+
+            if(navigator.appVersion.search(/(MSIE 6|MSIE 7)/i) === -1){
+                var _all = document.querySelectorAll(e);
+                if(_all.length > 1){
+                    return _all;
+                }else if(_all.length > 0){
+                    return _all[0];
+                }else{
+                    return false;
+                }
+            }else{
+
+                console.log(document.querySelector(e));
+            }
+        }
+        
+    })(ele);
+
+    // 区别IE6.7的className 和 W3C的 class
+    this.classTag = (function(){
+        return navigator.appVersion.search(/(MSIE 6|MSIE 7)/i) === -1 ? 'class' : 'className';
+    })();
+}
+
+
+Zz.prototype = {
+
+	// 此属性返回对创建此对象的数组函数的引用。
+    constructor : Zz,
+
+    trim : function(str){
+        if(!this.z) return this;
+    	return str.replace(/(^\s*)|(\s*$)/g, '');
+    },
+
+    inArray : function(arr, val){
+        for(var i in arr){
+            if(this.trim(arr[i]) === this.trim(val)) return true;
+        }
+        return false;
+    },
+
+    _class : function(_isstr){
+        if(!this.z) return this;
+        var _str = this.trim(this.attr(this.classTag));
+        return _isstr === undefined ? _str : _str.split(/\s+/);
+    },
+
+    hasClass : function(_name){
+        return this.inArray(this._class(true), _name) ? true : false;
+    },
+
+    addClass : function(_add){
+
+        var _ary = _add.split(/\s+/);
+
+        _add = _ary.length === 1 ? _ary[0] : _ary.join(' ');
+
+        if(!this.hasClass(_add)) this.attr(this.classTag, (this._class() + ' ' + _add));
+
+        return this;
+    },
+
+    removeClass : function(_add){
+
+        var _ary = _add.split(/\s+/);
+
+        if(_ary.length === 1){
+            _add = _ary[0];
+            if(this.hasClass(_add)){
+
+                var _old = this._class(true), _new = [];
+                for(var i in _old) if(_old[i] !== _add) _new[i] = _old[i];
+
+                this.attr(this.classTag, _new.join(' '));
+            }
+        }else if(_ary.length > 1){
+
+            var _class = this._class(true).join(' ') + ' ';
+
+            for(var k in _ary){
+
+                _add = _ary[k];
+                if(this.hasClass(_add)){
+
+                    _class = _class.replace(_add + ' ', '');
+                }
+            }
+
+            this.attr(this.classTag, this.trim(_class));
+        }
+
+        return this;
+    },
+
+    attr : function(_name, _value){
+
+        if(!this.z) return this;
+
+        if(_value === undefined){
+            return this.z.getAttribute(_name);
+        }else{
+            this.z.setAttribute(_name, _value);
+        }
+
+        return this; // 维持链式操作
+    },
+
+    hasAttr : function(_name){
+        return this.z.getAttribute(_name) === null ? false : true;
+    },
+
+    forEach : function(_fn){
+        var i = 0, n = this.z.length;
+        for(; i<n; i++){
+           _fn.call(this.z[i], i);
+        }
+    }
+}
+
+//console.log(Z('#u-test').addClass('y0es,cb,av, kk').removeClass('yes, kk').attr('data-id', 150).hasAttr('data-idd'));
+// var zzz = Z('.yes').addClass('kk kk2').removeClass('kk2').attr('data-id', 150).attr('data-id');
+var zzz = Z('.yes');
+zzz.forEach(function(i){
+    var _that = this;
+    console.log(_that.getAttribute('class'));
+});
+
+</script>
+
+</body>
+</html>

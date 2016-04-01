@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>基于jQuery的日历选择器[时间预约]</title>
+<script src="../jquery.1.8.3.min.js"></script>
+<script src="jquery.calendar.min.js"></script>
+<link rel="stylesheet" href="../reset.css" />
+<style>
+body{padding: 10px 0 0 10px;font-family: Microsoft YaHei;}
+.u-calendar{font-size: 14px;width: 100%;}
+.u-calendar table{width:630px;border:1px solid #c7c7c7;border-top:none;background-color: #fff;}
+.u-calendar td{width: 14%;text-align:center;height:70px;border-bottom:1px solid #c7c7c7;cursor: not-allowed;color:#999;}
+.u-calendar thead td{cursor: default;color: #fff;height:50px;border-bottom:none;background-color:#c7c7c7;}
+.u-calendar thead td.z-sp{background-color: #fd6845;}
+.u-calendar td i{display: block;width: 100%;padding-top: 5px;}
+.u-calendar td.z-on{cursor:pointer;color:#69f;}
+.u-calendar td.z-at{color:#008000;background: url(n1.bg14.png) no-repeat 50%;}
+.u-calendar td.z-dis{color:#999;}
+
+.u-calendar .u-arrow{width:628px;line-height:60px;border:1px solid #ccc;border-bottom: none;}
+.u-calendar .u-arrow a, .u-calendar .u-arrow span{display:block;float:left;}
+.u-calendar .u-arrow a{width:95px;padding-left:30px;color:#999;cursor:default;}
+.u-calendar .u-arrow a.z-on{color:#555;cursor:pointer;background:url(ig11.png) no-repeat 15px 20px;}
+.u-calendar .u-arrow a.rgt{background-position:100px -62px;padding-left:0;padding-right:30px;text-align: right;}
+.u-calendar .u-arrow span{width:378px;text-align: center;color: #fe6b0c; font-size: 16px;}
+
+.u-calendar .u-show{padding-top:20px;font-size: 16px;}
+.u-calendar .u-show span{color:#fe6b0c;display: block;padding-top:5px;line-height:25px;}
+</style>
+</head>
+<body>
+
+<div style="padding-bottom:20px;font-size:16px;line-height:30px;" class="j-tt">
+	<input type="radio" name="tt" value="1" /> 情景1: 时间连续<br />
+	<input type="radio" name="tt" value="2" /> 情景2: 时间连续<br />
+	<input type="radio" name="tt" value="3" /> 情景3: 时间连续<br />
+	<input type="radio" name="tt" value="4" /> 情景4: 时间非连续
+</div>
+
+<div class="u-calendar" id="j-calendar">
+	<div class="u-arrow f-cb"></div>
+	<table></table>
+	<p class="u-show"></p>
+	<input type="hidden" />
+</div>
+
+<script>
+
+/*
+{
+	txt : ['年', '月', '已预约时间：', '可预约', '不可预约'],
+	cls : ['z-on', 'z-dis', 'z-at'],
+	iw : true,		// 是否允许周末预约 注：只针对连续选择有效
+	sp : 5,			// 设置不可预约天数 注：目前只支持1-5天
+	fw : 0, 		// 星期的排列顺序 参数：[0:周日排前; 1:周一排前]
+	num : 3,		// 选择总数量 注：数量为1时表示，选择非当前日期 可取消 当前已选择的日期；大于数值1时则无法达到此效果]
+	tp : true,		// 时间类型 参数：[false:非连续时间(各个独立日期); true:连续的时间(某日到某日)]
+	ls : [],		// 时间区间 格式：['20150901', '20151220', ...]
+	mt : false,		// 加载时制定月份 参数：[false:系统当前年月份; 反之为指定年月(格式：['2015', '11'])]
+	has : [],		// 已保存值 格式：['20151113', '20151229', '20151127'])
+	err : false,	// 提示回调 默认false，自定义的格式：function(n){ .... }; 注: n为已存在个数
+	max : 20301231	// 日历的最大时间值
+}
+*/
+
+$('.j-tt').on('click', 'input', function(){
+
+	var _this = $(this), _val = _this.val();
+
+	var _json = {
+		1 : {
+			iw : false,
+			ls : ['20151130', '20170505'],
+			//has : ['20151214', '20151229', '20160127'],
+			err : function(n){
+				console.log('预约时间不能超过 ' + n + ' 个');
+			}
+		},
+		2 : {
+			ls : ['20150929', '20160525'],
+			has : ['20160229'],
+			num : 1,
+			mt : ['2015', '12']
+		},
+		3 : {
+			ls : [''],
+			has : ['20151214', '20160129', '20151229'],
+			mt : ['2015', '12']
+		},
+		4 : {
+			tp : false,
+			ls : [],
+			msg : '暂无预约信息',
+			has : ['20160304', '20151229'],
+			mt : ['2016', '02'],
+			err : function(n){
+				console.log('预约时间不能超过 ' + n + ' 个');
+			}
+		}
+	};
+
+	// var _cfg = _json[_val];
+	// var _cc = new zCalendar('#j-calendar', _cfg);
+	// _cfg.mt = ['2016', '02'];
+	// _cfg.has = ['20151127', '20160809'],
+	// _cc.refrash(_cfg);
+
+});
+
+
+// 
+new zCalendar('#j-calendar', {
+	ls : ['20160223', '20160505'],
+	err : function(n){
+		console.log('预约时间不能超过 ' + n + ' 个');
+	}
+});
+
+</script>
+</body>
+</html>

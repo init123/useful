@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Kissy.Mini-[demo]</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<script src="kissy.mini-1.0.1-min.js"></script>
+<style>
+.u-div{width:300px;background-color:#efefef;padding: 10px;}
+a{text-decoration: none;}
+.u-btn{display:inline-block;padding: 2px 18px;font: 16px/1.5 Microsoft YaHei; background-color: #69f;color:#fff;border-radius: .25em;text-align:center;}
+h4{font-family: Microsoft YaHei;color: #575757;}
+h6{font: 20px/1.5 Consolas;color:#69f;}
+</style>
+
+<script>
+KISSY.ready(function(S){
+
+	$ = S.all;
+
+	// 添加元素
+	$('<h4></h4><h6>just create a tag!</h6>').appendTo(document.body);
+
+	var _h4 = $('h4'), _h6 = $('h6');
+
+	// 父级点击
+    $(document).on('tap', function(){
+
+		_h4.html('点击BODY区域');
+		return false;
+    });
+
+	// 二级点击
+    $('#j-div').on('tap', function(){
+
+		_h4.html('点击DIV区域');
+
+		var _this = $(this);
+
+		if(_this.hasClass('hov')){
+			_this.removeClass('hov').animate({width:300}, 0.5, 'easeNone');
+		}else{
+			_this.addClass('hov').animate({width:350}, 0.5, 'easeNone');
+		}
+
+		$('.j-btn').removeClass('on').removeAttr('data-id');
+		
+		return false;
+    });
+
+    // 
+	$('.j-btn').on('tap', function(){
+
+		_h4.html('点击确定按钮');
+
+		var _this = $(this);
+
+		_this.addClass('on').attr('data-id', 0);
+
+		$('#j-div').removeClass('hov');
+
+		return false;
+    });
+
+	// ajax demo
+    $('.j-sub').on('tap', function(){
+
+    	_h4.html('点击提交按钮');
+
+    	var _url = 'http://work.tony.com/io.php',
+    		_data = {id:100, type:2};
+
+    	// IO module
+    	S.IO({
+		    url: _url, data: _data, dataType:'jsonp', 	// 可取值为'json'/'jsonp'
+		    success: function(res){ 					// [res, status, xhr]
+		        _h6.html('status: '+ res['status'] +'; title: '+ res['title']);
+		    }
+		});
+
+		window.setTimeout(function(){
+			_h6.html('');
+		}, 2000);
+
+		return false;
+    });
+ 
+});
+</script>
+</head>
+<body>
+
+<div id="j-div" class="u-div">
+	<a href="javascript:void(0)" class="j-btn u-btn">确认</a>
+	<a href="javascript:void(0)" class="j-sub u-btn">提交</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>JavaScript的设计模型</title>
+<script src="../jquery.1.8.3.min.js"></script>
+</head>
+<body>
+
+<h1 style="font-family:consolas">Console.log()</h1>
+
+<button id="j-btn">Test</button>
+
+<script>
+
+/*
+ * 闭包的表现和说明：
+ * 1.闭包最常用的方式就是返回一个内联函数（何为内联函数？就是在函数内部声明的函数）
+ * 2.函数内部的变量在函数外部是无法访问的，但创建一个闭包，用来函数外部访问函数内部的变量，且这些变量一直存在内存中
+ * 3.使用闭包，变量存在内存中无法回收，易造成内存溢出，所以不能滥用；退出函数前，将不使用的局部变量全部删除。
+ */
+function outerFunc(){
+
+	// 内部函数变量
+	var n = 1000;
+
+	// 内部函数:函数内部声明的函数
+	function innerFunc(){ return n++; }
+
+	// 暴露内部函数结果给外部
+	return innerFunc; 
+}
+
+// 引用外部函数
+var func = outerFunc();
+
+// 获取函数内部的变量，且一直存在于内存中
+console.log(func()); // 1000
+console.log(func()); // 1001
+console.log(func()); // 1002
+
+/* [end] 闭包--------------------------- */
+
+</script>
+
+</body>
+</html>

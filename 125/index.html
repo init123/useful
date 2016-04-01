@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>条形码</title>
+    <script src="../jquery.1.8.3.min.js"></script>
+    <script src="jquery-barcode-last.min.js"></script>
+	<style>
+	html{height:100%;-overflow-y:scroll;border:0}
+	body{min-height:100%;-height:100%;position:relative;background-color:#fff;}
+	body,h1,h2,h3,h4,h5,h6,p,div,dl,dt,dd,ul,ol,li,form,button,input,textarea,th,td,pre,fieldset,img{margin:0;padding:0;border:0;}
+	h1,h2,h3,h4,h5,h6,select,input,textarea,button,table{font-size:100%;font-weight:normal}
+	ul,ol,dl{list-style:none}
+	a,u,a:hover{text-decoration:none;outline:0;}
+	i,em{font-style:normal}
+	table{border-collapse:collapse;border-spacing:0}
+	th{text-align:left;font-weight:normal}
+	body,textarea,input,button,select{font-family:SimHei;color:#333;outline:0;}
+	.f-cb:before,.f-cb:after{content:" ";display:table;}.f-cb:after{clear:both;}.f-cb{*zoom:1;}
+	.f-ib{display:inline-block;*display:inline;*zoom:1;}/* IE6-7*/
+
+	#g-main{width:360px;margin:0 auto;padding-top: 14px;}
+	#g-main dl{font-size: 12px;}
+	#g-main dl.u-ct1{padding-top:10px;}
+	#g-main dl.u-ct1 dt{float: left;width: 274px;}
+	#g-main dl.u-ct1 dd{float: left;}
+	#g-main dl.u-ct2 dt{float: left;width:135px;}
+	#g-main dl.u-ct2 dd{float: left;}
+	#g-main dl.u-ct3 dt{float: left;width:270px;}
+	#g-main dl.u-ct3 dd{float: left;position: relative;}
+	#g-main dl.u-ct3 dd span{position: absolute;font-size:18px;width:100px;top:-10px;}
+	#g-main dl.u-ct3 dd u{position: absolute;width:100px;top:-10px;}
+	#g-main dl.u-ct3 dd em{position: absolute;width:100px;top:25px;left:0px;}
+
+	#g-main dl.u-ct4{padding-top: 30px;}
+	#g-main dl.u-ct4 dt{float: left;width: 274px;}
+	#g-main dl.u-ct4 dd{float: left;position: relative;}
+	#g-main dl.u-ct4 dd span{position: absolute;font-size:22px;width:150px;top:-20px;}
+
+	#g-main p.u-ct5{padding-top:60px;text-align: center;font-size: 14px;padding-bottom: 8px;}
+	#g-main table.u-ct6{font-size: 12px;width:360px;}
+	#g-main table.u-ct6 span{font-size: 12px;width: 90px;}
+	#g-main table.u-ct6 u{font-size: 18px;width: 100px;}
+	#g-main .f-tr{text-align: right;padding-right: 20px;}
+	#g-main .f-po{position: relative;}
+	#g-main .f-po em{position: absolute;width:100px;top:70px;right:100px;}
+
+	#g-not-prt{text-align:center;padding:50px;font-family:Microsoft YaHei;backgroud-color:#69f;}
+	#g-not-prt a{background-color:#69f;color:#fff;padding:3px 10px;border-radius:.25em;font-size: 14px;}
+	</style>
+	<style media="print">   
+	#g-not-prt{display:none;}
+	</style>
+</head>
+<body>
+
+<div id="g-not-prt">
+	<OBJECT classid="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2" height="0" id="IEPrint" name="IEPrint" width="0"></OBJECT> 
+	<a href="javascript:void(0)" class="f-ib j-go-prt">打印</a>
+</div>
+
+<div id="g-main">
+	<div id="j-barcode"></div>
+
+	<dl class="u-ct1 f-cb"><dt>收方信息</dt><dd>代收金额</dd></dl>
+	<dl class="u-ct2 f-cb"><dt>姓名：李四</dt><dd>电话：13852417896</dd></dl>
+	<dl class="u-ct3 f-cb"><dt>地址：上海市浦东新区川沙路888号</dt><dd><span class="f-ib">￥0.01元</span></dd></dl>
+
+	<dl class="u-ct4 f-cb"><dt>寄方信息</dt><dd><span class="f-ib">1/1</span></dd></dl>
+	<dl class="u-ct2 f-cb"><dt>姓名：王五</dt><dd>电话：15052417896</dd></dl>
+	<dl class="u-ct3 f-cb"><dt>地址：江苏省宿迁市沛阳县拍拍街88号</dt><dd><u class="f-ib">客户签字</u><em class="f-ib">2015-11-11</em></dd></dl>
+
+	<p class="u-ct5 f-cb">运单号：VB00977085653</p>
+
+	<div style="padding-bottom:8px;">
+	<table class="u-ct6">
+		<tr>
+			<td>
+				订单号：020000013093-001<br />
+				<span class="f-ib">姓名：李四</span>电话：13852417896<br />
+				备注：小心易碎
+			</td>
+			<td class="f-tr">
+				代收金额<br />
+				<u class="f-ib">￥0.01元</u>
+			</td>
+		</tr>
+	</table>
+	</div>
+	<table class="u-ct6">
+		<tr>
+			<td>
+				寄方信息<br />
+				<span class="f-ib">姓名：王五</span>电话：13852417896<br />
+				地址：江苏省宿迁市沛阳县拍拍街88号
+			</td>
+			<td class="f-po">
+				<div id="j-barcode-s"></div>
+				<em class="f-ib">2015-11-11</em>
+			</td>
+		</tr>
+	</table>
+	<script>
+	var brow = $.browser;
+	$(function(){
+		$('#j-barcode').barcode('VB00977085653-1-1-014', 'code128', {barScale:1.4,barHeight: 42, fontSize:13}).find('div:first').css({width:0});
+		$('#j-barcode-s').barcode('VB00977085653', 'code128', {barScale: 1,barHeight: 48, fontSize:12});
+		
+		$('.j-go-prt').click(function(){
+			if(brow.msie){
+				document.all.IEPrint.ExecWB(6, 6)
+			}else{
+				window.print();
+			}
+		});
+	});
+	</script>
+</div>
+
+</body>
+</html>

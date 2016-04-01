@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>HTML5触屏滚动选择级联地区</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
+<script src="zepto.min.js"></script>
+<script src="scroll.min.js"></script> 
+<script src="region.3.json.js"></script>
+<style>
+
+/* reset */
+html, body, div, span, h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, address, big, cite, code, del, em, img, ins, kbd,
+small, strong, sub, sup, b, u, i, dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video, input {margin: 0;padding: 0;border: none;outline:0;font-size: 100%;font: inherit;vertical-align: baseline;}
+
+html, body{ -webkit-user-drag: none; -webkit-text-size-adjust: 100%;}
+a{text-decoration: none;}
+input{-webkit-user-modify: read-write-plaintext-only;}
+a,input,button,textarea,fieldset,ul,span,i{-webkit-tap-highlight-color: rgba(255,255,255,0);}
+input[type='text'],textarea,fieldset{border:none;outline: none;}
+textarea{ overflow:auto;resize:none;}
+body, h1, h2, h3, h4, h5, h6, input[type='text'], textarea{font-family : "Helvetica Neue",Helvetica,STHeiTi,"Microsoft YaHei",sans-serif;}
+html, body, form, fieldset, p, div, h1, h2, h3, h4, h5, h6 {-webkit-text-size-adjust: none;}
+a, img {-webkit-touch-callout: none; /*  */ }
+article, aside, details, figcaption,figure, footer, header, hgroup, menu, nav, section {display: block;}
+ol, ul, ol li, ul li{list-style:none;}
+table {border-collapse: collapse;border-spacing: 0;}
+
+/* function */
+.fcb:before,.fcb:after{content: '';display:table;}
+.fcb:after{clear:both;}
+.fib{display:inline-block;}
+.fdn{display:none;}
+
+#g-demo h4.btn{background-color:rgba(255,255,255, .8);position:fixed;bottom:0;left:0;width:100%;border-top: 1px solid #ccc;z-index:902;}
+#g-demo h4.btn span{display:block;width:100%;text-align:center;padding:20px 0;white-space:nowrap;word-wrap:normal;overflow:hidden;text-overflow:ellipsis;}
+#g-demo h4.btn span i{color:#fc6b10;}
+#g-demo h4.btn span.on{background-color: #fe6b0c;color: #fff}
+#g-demo h4.btn span.on i{color: #fff}
+
+.mask{position:fixed;top:0;left:0;right:0;bottom:0;background-color:rgba(0,0,0, .5);width:100%;height:100%;z-index:900;display:none;}
+#g-demo .pop-addrs{position:fixed;left:0;bottom:60px;width: 100%;background-color:#fff;display:none;height:280px;z-index:992;}
+#g-demo .pop-addrs h4{position:absolute;top:119px;z-index:9;width:100%;height:40px;border-top:1px solid #ccc;border-bottom:1px solid #ccc;border-left:5px solid #fe6b0c;background-color: #efefef;}
+#g-demo .u-scroll{position: absolute;top:0em;width:33.3%;height:280px;overflow: hidden;z-index:992;}
+#g-demo .u-scroll ul{list-style: none;padding: 0;margin: 0;width: 100%;}
+#g-demo .u-scroll ul li{line-height:40px;height:40px;font-size:18px;text-align: center;width: 100%;overflow: hidden;}
+#g-demo .fst {left: 0%;z-index: 910;}
+#g-demo .scd {left: 34%;z-index: 920;}
+#g-demo .thr {left: 68%;z-index: 930;}
+</style>
+</head>
+
+<body id="g-demo">
+
+<h4 class="btn">
+    <span href="javascript:void(0)" class="addrs" id="j-open-addrs">地区<i>(全部)</i></span>
+</h4>
+    
+<!-- 地区 -->
+<div class="pop-addrs" id="j-addrs-pop">
+    <h4></h4>
+    <div id="sclProv" class="u-scroll fst"><ul></ul></div>
+    <div id="sclCity" class="u-scroll scd"><ul></ul></div>
+    <div id="sclArea" class="u-scroll thr"><ul></ul></div>
+</div>
+
+<div id="j-fix" class="mask"></div>
+
+<script>
+
+// 上下间距 & 上下空白
+var _each = 40, _empty = 3;
+
+// 地区滚动元素
+var fstScroll, scdScroll, thrScroll;
+var  _addrs = ['全部','全部','全部'];
+var fst = '#sclProv', scd = '#sclCity', thr = '#sclArea';
+
+$(function(){
+
+	// 蒙版 列表区域
+    var _mask = $('#j-fix');
+
+    // 地区DOM
+    var _addrsOpen = $('#j-open-addrs');
+    var _addrsPop = $('#j-addrs-pop');
+
+    // 地区弹窗
+    _addrsOpen.on('touchend', function(e){
+
+        var _this = $(this), _tag = _this.children('i');
+
+        _this.addClass('on');
+
+        // 创建省份和市区选项            
+        createRegion(obRegion.prov, $(fst + ' ul'), 1);
+        createRegion({}, $(scd + ' ul'), 2);
+        createRegion({}, $(thr + ' ul'), 3);
+
+        // 计算当前的索引滚动位置
+        var _val = _tag.attr('data-val');
+        var _t = false;
+        if(_val){
+            _arr = _val.split(',');
+            _pid = _arr[0].split('|')[1];
+            var _then = $(fst + ' > ul > li').filter(function(){
+                return $(this).attr('data-val') == _pid;
+            });
+            if(_then.length > 0)  _t = $(fst + ' ul').children('li').index(_then);
+        }
+    
+        _mask.show();
+        _addrsPop.show();
+
+        regionScroll(_t);
+
+        // 防止冒泡
+        e.preventDefault();
+        return false;
+    });
+
+    // 地区的选择
+    _addrsPop.on('tap', '.j-son-addrs', function(e){
+
+        var _this = $(this), 
+            _val = _this.attr('data-val'), 
+            _lv = _this.attr('data-lv');
+
+        // 点击 省级
+        if(_lv == '1' && _val != ''){
+
+        	// 点击 全部
+            if(_val == '0'){
+                
+                _mask.hide();
+                _addrsPop.hide();
+
+                _addrsOpen.removeClass('on').find('i').text('(全部)');
+
+            }else{
+
+                var _i = $(fst + ' ul').find('li').index(_this) - (_empty - 1);
+                fstScroll.scrollToElement(document.querySelector(fst + ' li:nth-child('+ _i +')'));
+            }
+        }
+
+        // 点击 市级
+        if(_lv == '2' && _val != ''){
+
+        	// 点击 全部
+            if(_val == '0'){
+                
+                _mask.hide();
+                _addrsPop.hide();
+
+                // 获取省级值
+                var _val = _addrs[0], _arr = _val.split('|');
+                _addrsOpen.removeClass('on').find('i').attr('data-val', _val).text('('+ _arr[0] +')');
+
+            }else{
+
+                var _i = $(scd + ' ul').find('li').index(_this) - (_empty - 1);
+                scdScroll.scrollToElement(document.querySelector(scd + ' li:nth-child('+ _i +')'));
+            }
+        }
+
+        // 点击 县级
+        if(_lv == '3' && _val != ''){
+
+            if(_val == '0'){
+
+                var _val1 = _addrs[0], _arr1 = _val1.split('|');
+                var _val2 = _addrs[1], _arr2 = _val2.split('|');
+                _addrsOpen.removeClass('on').find('i').attr('data-val', _val1 + ',' + _val2).text('('+ _arr1[0] + ' / ' + _arr2[0] +')');
+
+            }else{
+
+                _addrs[2] = _this.text() + '|' + _val;
+
+                var _tmp = [], _val = _addrs.join(',');
+                for(var _i in _addrs){
+                    var _arr = _addrs[_i].split('|');
+                    _tmp[_i] = _arr[0];
+                }
+                _addrsOpen.removeClass('on').find('i').attr('data-val', _val).text('('+ _tmp.join(' / ') +')');
+            }
+            
+            // 隐藏
+            _mask.hide();
+            _addrsPop.hide();
+        }
+
+        e.preventDefault();
+        return false;
+    }); 
+
+});
+
+// [函数]地区滚动
+function regionScroll(_t) {
+
+    // 阻止默认的事件
+    //document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+    
+    // 省级
+    fstScroll = new IScroll(fst, {
+        spacing: _each,
+        callback: function(index){
+
+            // 验证 index 的有效性
+            if(index > 0) return false;
+            if(index < 0) index = 0 - index;
+
+            var _then = $(fst + ' ul li').eq(index + _empty);
+            var _pid = _then.attr('data-val');
+            _addrs[0] = _then.text() + '|' + _pid;
+
+            // 动态构造 市
+            var _getCity = obRegion.retSubDataById(_pid);
+            if(_getCity){
+                createRegion(_getCity, $(scd + ' ul'), 2);
+                scdScroll.scrollTo(0, 0);
+                scdScroll.refresh();
+
+                createRegion({}, $(thr + ' ul'), 3);
+               	thrScroll.scrollTo(0, 0);
+                thrScroll.refresh();
+            }
+        }
+    });
+
+    // 是否存在已经选中
+    if(_t) fstScroll.scrollToElement(document.querySelector(fst + ' li:nth-child('+ (_t - (_empty - 1)) +')'), 100);
+
+    // 市级
+    scdScroll = new IScroll(scd, {
+        spacing: _each,
+        callback: function(index){
+
+            // 验证 index 的有效性
+            if(index > 0) return false;
+            if(index < 0) index = 0 - index;
+
+            var _then = $(scd + ' ul li').eq(index + _empty);
+            var _pid = _then.attr('data-val');
+            _addrs[1] = _then.text() + '|' + _then.attr('data-val');
+
+            // 动态构造 县
+            var _getArea = obRegion.retSubDataById(_pid);
+            if(_getArea){
+                createRegion(_getArea, $(thr + ' ul'), 3);
+                thrScroll.scrollTo(0, 0);
+                thrScroll.refresh();
+            }
+        }
+    });
+
+    // 县级
+    thrScroll = new IScroll(thr, {
+        spacing: _each,
+        callback: function(index){
+
+            // 验证 index 的有效性
+            if(index > 0) return false;
+            if(index < 0) index = 0 - index;
+
+            var _then = $(thr + ' ul li').eq(index + _empty);
+            var _pid = _then.attr('data-val');
+            _addrs[2] = _then.text() + '|' + _then.attr('data-val');
+        }
+    });
+}
+
+// [函数]创建地区
+function createRegion(_data, _ob, _lv){
+
+    var _li = '<li data-val="">&nbsp;</li><li data-val="">&nbsp;</li><li data-val="">&nbsp;</li><li class="j-son-addrs" data-val="0" data-lv="'+ _lv +'">全部</li>';
+
+    for(var _id in _data){
+        _li += '<li class="j-son-addrs" data-val="'+ _id +'" data-lv="'+ _lv +'">'+ _data[_id] +'</li>';
+    }
+
+    _ob.html(_li + '<li data-val="">&nbsp;</li><li data-val="">&nbsp;</li><li data-val="">&nbsp;</li>');
+}
+</script>
+
+</body>
+</html>

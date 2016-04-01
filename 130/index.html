@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=0" />
+<title>移动端的Touch事件</title>
+<style>
+*{margin:0;padding:0}
+html,body{height:100%}
+body{height:2500px;}
+.g-demo{position:relative;width:100%;height:100px;background-color:#ccc;;box-sizing: border-box;padding:20px;}
+.g-demo div{position:absolute;width:50px;height:50px;background-color:#36f;}
+</style>
+</head>
+
+<div class="g-demo" id="j-demo">点击灰色区域生成蓝色方块拖动</div>
+
+<script>
+
+var demo = document.getElementById('j-demo'), child, startX, startY;
+
+demo.addEventListener('touchstart', function(event){
+
+    // 锁定当前网页，防止网页的默认滚动与目标对象滚动冲突
+    document.addEventListener('touchmove', stopDeft, false);
+
+    if(child || !event.touches.length) return;
+
+    var touch = event.touches[0];
+
+    startX = touch.pageX;
+    startY = touch.pageY;
+
+    child = document.createElement("div");
+
+    demo.appendChild(child);
+
+    child.style.left = startX + 'px';
+    child.style.top = startY + 'px'
+
+}, false);
+
+demo.addEventListener('touchmove', function(event){
+
+    if(!child || !event.touches.length) return;
+
+    var touch = event.touches[0],
+        x = touch.pageX - startX,
+        y = touch.pageY - startY;
+
+    // 计算横向滚动： X位置的偏移要比Y的偏移大
+    // if(Math.abs(x) > Math.abs(y)) {
+        child.style.left = touch.pageX + 'px';
+        child.style.top = touch.pageY + 'px';
+    // }
+
+}, false);
+
+demo.addEventListener('touchend', function(){
+
+    if(!child) return;
+    demo.removeChild(child);
+    child = null;
+
+    // 解锁当前网页，即页面恢复默认滚动，防止不能浏览下一屏
+    document.removeEventListener('touchmove', stopDeft, false);
+
+}, false);
+
+// 阻止默认事件
+function stopDeft(ev){ ev.preventDefault(); }
+</script>
+
+</body>
+</html>

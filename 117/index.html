@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+
+		<title>dotdotdot, advanced cross-browser ellipsis for multiple line content.</title>
+
+		<script type="text/javascript" src="../jquery.1.8.3.min.js"></script>
+		<script type="text/javascript" language="javascript" src="jquery.dotdotdot.min.js"></script>
+		<script type="text/javascript" language="javascript">
+			$(function() {
+
+				// dot1
+				$('#dot1').dotdotdot();
+
+				// dot2
+				$('#dot2').dotdotdot();
+
+				// dot3
+				$('#dot3').dotdotdot({after: 'a.readmore'});
+
+				// dot5
+				var dot5 = $('#dot5');
+				dot5.dotdotdot({after:'a.toggle'}).on('click', 'a.toggle', function(){
+
+					dot5.toggleClass( 'opened' );
+
+					if(dot5.hasClass('opened')) {
+						dot5.trigger('destroy');
+					}else{
+						dot5.dotdotdot({after:'a.toggle'});
+					}
+					return false;
+				});
+
+				// dot6
+				$('#dot6 .pathname').each(function() {
+					var path = $(this).html().split( '/' );
+					if ( path.length > 1 ) {
+						var name = path.pop();
+						$(this).html( path.join( '/' ) + '<span class="filename">/' + name + '</span>' );
+						$(this).dotdotdot({
+							after: '.filename',
+							wrap: 'letter'
+						});						
+					}
+				});
+			});
+		</script>
+		<style>
+			html, body {
+				padding: 0;
+				margin: 0;
+				height: 100%;
+			}
+			body, div, p {
+				font-family: Microsoft Yahei;
+				color: #69f;
+				-webkit-text-size-adjust: none;
+				line-height: 20px;
+			}
+			body {
+				background-color: #f3f3f3;
+			}
+			a, a:link, a:active, a:visited {
+				color:#f00;
+				text-decoration: underline;
+			}
+			a:hover {
+				color: #36f;
+			}
+
+			#wrapper {
+				background-color: #fff;
+				width: 600px;
+				padding: 50px 50px 0 50px;
+				margin: 0 auto;
+				border: 1px solid #ccc;
+				box-shadow: 0 0 5px #ccc;
+			}
+			#intro {
+				margin-bottom: 60px;
+			}
+			#intro p {
+				font-size: 18px;
+			}
+
+			div.example {
+				padding: 0 0 150px 0;
+			}
+			div.example:after {
+				content: '';
+				display: block;
+				clear: both;
+			}
+			div.example p {
+				margin: 0 0 10px 0;
+			}
+			div.l {
+				width: 275px;
+				float: left;
+			}
+			div.r {
+				width: 275px;
+				float: right;
+			}
+			
+			div.box {
+				border: 1px solid #ccc;
+				height: 100px;
+				padding: 15px 20px 10px 20px;
+			}
+			div.resize {
+				padding-bottom: 250px;
+			}
+			div.resize div.box {
+				position: absolute;
+				width: 40%;
+				height: 100px;
+			}
+			div.resize div.box.before {
+				right: 50%;
+				margin-right: 10px;
+			}
+			div.resize div.box.after {
+				left: 50%;
+				margin-left: 10px;
+			}
+			div.box.opened
+			{
+				height: auto;
+			}
+			div.box .toggle .close,
+			div.box.opened .toggle .open
+			{
+				display: none;
+			}
+			div.box .toggle .opened,
+			div.box.opened .toggle .close
+			{
+				display: inline;
+			}
+			div.box.before {
+				background-color: #ffeeee;
+			}
+			div.box.after {
+				background-color: #eeffee;
+			}
+			p.before {
+				color: #990000;
+			}
+			p.after {
+				color: #006600;
+			}
+			div.box.pathname {
+				height: auto;
+			}
+			.pathname {
+				height: 25px;
+			}
+		</style>
+	</head>
+	<body>
+		<br />
+		<br />
+		<div id="wrapper">
+			
+
+			<div class="example">
+				<p><strong>Text only:</strong></p>
+				<div class="l">
+					<p class="before">before:</p>
+					<div class="box before">Lorem存有只是印刷排版业虚拟文本。Lorem存有一直是行业的标准虚拟文本自从16世纪，当一个未知的打印机把厨房型和炒它做字体样本。它不仅存活了五个世纪，而且还跨越了电子排版，基本上保持不变。</div>
+				</div>
+				<div class="r">
+					<p class="after">after:</p>
+ 					<div class="box after" id="dot1">Lorem存有只是印刷排版业虚拟文本。Lorem存有一直是行业的标准虚拟文本自从16世纪，当一个未知的打印机把厨房型和炒它做字体样本。它不仅存活了五个世纪，而且还跨越了电子排版，基本上保持不变。</div>
+				</div>
+			</div>
+
+			<div class="example">
+				<p><strong>Text with markup:</strong></p>
+				<div class="l">
+					<p class="before">before:</p>
+					<div class="box before">
+						<p><em>Lorem Ipsum</em> is simply dummy text of the <strong>printing</strong> and <strong>typesetting industry</strong>.</p>
+						<p><em>Lorem Ipsum</em> has been the industry's standard dummy text ever since <strong>the 1500s</strong>, when an unknown printer took a <em>galley of type</em> and scrambled it to make a type specimen book.</p>
+						<p>It has survived not only <strong>five centuries</strong>, but also the leap into <strong>electronic typesetting</strong>.</p>
+					</div>
+				</div>
+				<div class="r">
+					<p class="after">after:</p>
+					<div class="box after" id="dot2">
+						<p><em>Lorem Ipsum</em> is simply dummy text of the <strong>printing</strong> and <strong>typesetting industry</strong>.</p>
+						<p><em>Lorem Ipsum</em> has been the industry's standard dummy text ever since <strong>the 1500s</strong>, when an unknown printer took a <em>galley of type</em> and scrambled it to make a type specimen book.</p>
+						<p>It has survived not only <strong>five centuries</strong>, but also the leap into <strong>electronic typesetting</strong>.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="example">
+				<p><strong>With an &quot;after&quot;-element:</strong></p>
+				<div class="l">
+					<p class="before">before:</p>
+					<div class="box before">Lorem存有只是印刷排版业虚拟文本。Lorem存有一直是行业的标准虚拟文本自从16世纪，当一个未知的打印机把厨房型和炒它做字体样本。它不仅存活了五个世纪，而且还跨越了电子排版，基本上保持不变。 <a href="#" class="readmore">更多 &raquo;</a></div>
+				</div>
+				<div class="r">
+					<p class="after">after:</p>
+					<div class="box after" id="dot3">Lorem存有只是印刷排版业虚拟文本。Lorem存有一直是行业的标准虚拟文本自从16世纪，当一个未知的打印机把厨房型和炒它做字体样本。它不仅存活了五个世纪，而且还跨越了电子排版，基本上保持不变。 <a href="#" class="readmore">更多 &raquo;</a></div>
+				</div>
+			</div>
+
+			<div class="example">
+				<p><strong>Toggle the full story</strong></p>
+				<div class="l">
+					<p class="before">before:</p>
+					<div class="box before">Lorem存有只是印刷排版业虚拟文本。Lorem存有一直是行业的标准虚拟文本自从16世纪，当一个未知的打印机把厨房型和炒它做字体样本。它不仅存活了五个世纪，而且还跨越了电子排版，基本上保持不变。</div>
+				</div>
+				<div class="r">
+					<p class="after">after:</p>
+					<div class="box after" id="dot5">Lorem存有只是印刷排版业虚拟文本。Lorem存有一直是行业的标准虚拟文本自从16世纪，当一个未知的打印机把厨房型和炒它做字体样本。它不仅存活了五个世纪，而且还跨越了电子排版，基本上保持不变。 <a class="toggle" href="#"><span class="open">[ + ]</span><span class="close">[ - ]</span></a></div>
+				</div>
+			</div>
+
+			<div class="example">
+				<p><strong>Truncate readable pathnames</strong></p>
+				<div class="l">
+					<p class="before">before:</p>
+					<div class="box before pathname">
+						<div class="pathname">www.website.com/file.html</div>
+						<div class="pathname">www.website.com/with/a/long/pathname/file.html</div>
+					</div>
+				</div>
+				<div class="r">
+					<p class="after">after:</p>
+					<div class="box after pathname" id="dot6">
+						<div class="pathname">www.website.com/file.html</div>
+						<div class="pathname">www.website.com/with/a/long/pathname/file.html</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</body>
+</html>
